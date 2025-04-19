@@ -1,40 +1,24 @@
-import React, { useState } from "react";
-import Question from "./Question";
-import quiz from "../data/quiz";
+import React, { useState } from 'react';
+import Question from './Question'; // Adjust import path if necessary
 
 function App() {
-  const [questions, setQuestions] = useState(quiz);
-  const [currentQuestionId, setCurrentQuestion] = useState(1);
-  const [score, setScore] = useState(0);
-  const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+  const [answered, setAnswered] = useState(null); // Tracks whether the question was answered correctly
 
-  function handleQuestionAnswered(correct) {
-    if (currentQuestionId < questions.length) {
-      setCurrentQuestion((currentQuestionId) => currentQuestionId + 1);
-    } else {
-      setCurrentQuestion(null);
-    }
-    if (correct) {
-      setScore((score) => score + 1);
-    }
-  }
+  const handleAnswered = (isAnswered) => {
+    setAnswered(isAnswered);
+    // Optionally, you can handle more logic here when a question is answered
+    console.log(isAnswered ? 'Correct!' : 'Time is up!');
+  };
 
   return (
-    <main>
-      <section>
-        {currentQuestion ? (
-          <Question
-            question={currentQuestion}
-            onAnswered={handleQuestionAnswered}
-          />
-        ) : (
-          <>
-            <h1>Game Over</h1>
-            <h2>Total Correct: {score}</h2>
-          </>
-        )}
-      </section>
-    </main>
+    <div>
+      <h1>Trivia Game</h1>
+      {answered === null ? (
+        <Question onAnswered={handleAnswered} />
+      ) : (
+        <p>{answered ? 'You answered correctly!' : 'You ran out of time!'}</p>
+      )}
+    </div>
   );
 }
 
